@@ -62,8 +62,6 @@
                         this.isHot = 1
                         this.isRecom = 0
                         break
-
-
                 }
                 //this.$router.replace('/homedir/homeHotdir')
             }
