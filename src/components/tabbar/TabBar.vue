@@ -82,6 +82,7 @@
         left: 0;
         right: 0;
         bottom: 0;
+        border-top: 1px solid #dcdcdc;
     }
     .tab-bar-item{
         flex: 1;

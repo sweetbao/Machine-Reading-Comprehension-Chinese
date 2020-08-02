@@ -2,9 +2,17 @@
     <div id="home">
         <top-nav class="top-nav"></top-nav>
         <tab-control class="tab-control"
-                     :titles="['直播','推荐','热门','追番','影视','说唱区']"></tab-control>
-        <vue-swiper></vue-swiper>
-        <video-recom :videos="vlist"></video-recom>
+                     :titles="['直播','推荐','热门','追番','影视','说唱区']"
+                     @tabClick = "tabClick"
+        ></tab-control>
+        <div class="recom-class" v-if="isRecom">
+            <vue-swiper></vue-swiper>
+            <video-recom :videos="vlist"></video-recom>
+        </div>
+        <div class="hot-class" v-if="isHot">
+            <video-hot :videos="hotlist"></video-hot>
+        </div>
+
     </div>
 
 </template>
@@ -15,12 +23,14 @@
     import VueSwiper from "../../components/vueSwiper/VueSwiper";
     import axios from "axios";
     import VideoRecom from "../../components/videoRecom/VideoRecom";
+    import VideoHot from "../../components/videoHot/VideoHot";
 
     //import {getHomeMultidata,getHomeGoods} from "../../components/netWork/request";
 
     export default {
         name: "home",
         components:{
+            VideoHot,
             VideoRecom,
             TopNav,
             TabControl,
@@ -34,7 +44,28 @@
                 },
                 result: null,
                 vlist:[],
-                mydata:''
+                mydata:'',
+                hotlist:[],
+                isRecom :1,
+                isHot :0,
+            }
+        },
+        methods:{
+            tabClick(index){
+                console.log(index);
+                switch (index) {
+                    case 1:
+                        this.isRecom = 1
+                        this.isHot = 0
+                        break
+                    case 2:
+                        this.isHot = 1
+                        this.isRecom = 0
+                        break
+
+
+                }
+                //this.$router.replace('/homedir/homeHotdir')
             }
         },
         created() {
@@ -55,6 +86,12 @@
                     this.vlist = JSON.parse(outarr);
                     console.log(this.vlist)
                 })
+            axios({
+                url: '/web-interface/dynamic/region?&;;jsonp=jsonp&ps=10&rid=1',
+                method: 'get'
+            }).then(res2 => {
+                console.log(res2)
+            })
 
         }
     }
